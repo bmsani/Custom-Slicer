@@ -1,0 +1,32 @@
+"use strict";
+
+import powerbi from "powerbi-visuals-api";
+import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
+import PrimativeValue = powerbi.PrimitiveValue;
+
+export interface VData {
+  values: PrimativeValue[];
+  table: string;
+  column: string;
+}
+
+export function transformData(options: VisualUpdateOptions): VData {
+  let data: VData;
+  try {
+    const values = options.dataViews[0].categorical.categories[0].values;
+    const queryName = options.dataViews[0].categorical?.categories[0].source.queryName;
+    const dotIx = queryName?.indexOf(".");
+    data = {
+      values,
+      table: queryName?.substring(0, dotIx),
+      column: queryName?.substring(dotIx + 1),
+    };
+  } catch (error) {
+    data = {
+      values: [],
+      table: "",
+      column: "",
+    };
+  }
+  return data;
+}

@@ -31,53 +31,84 @@ import { formattingSettings } from "powerbi-visuals-utils-formattingmodel";
 import FormattingSettingsCard = formattingSettings.Card;
 import FormattingSettingsSlice = formattingSettings.Slice;
 import FormattingSettingsModel = formattingSettings.Model;
+import { NumUpDown } from "powerbi-visuals-utils-formattingmodel/lib/FormattingSettingsComponents";
 
 /**
  * Data Point Formatting Card
  */
+
 class DataPointCardSettings extends FormattingSettingsCard {
-    defaultColor = new formattingSettings.ColorPicker({
-        name: "defaultColor",
-        displayName: "Default color",
-        value: { value: "" }
-    });
+  allSelectedLabel = new formattingSettings.TextInput({
+    name: "allSelectedLabel",
+    displayName: "All Selected Label",
+    placeholder: "Enter text",
+    value: "All",
+  });
 
-    showAllDataPoints = new formattingSettings.ToggleSwitch({
-        name: "showAllDataPoints",
-        displayName: "Show all",
-        value: true
-    });
+  defaultColor = new formattingSettings.ColorPicker({
+    name: "defaultColor",
+    displayName: "Default color",
+    value: { value: "#000000" },
+  });
 
-    fill = new formattingSettings.ColorPicker({
-        name: "fill",
-        displayName: "Fill",
-        value: { value: "" }
-    });
+  fontFamily = new formattingSettings.FontPicker({
+    name: "fontFamily",
+    displayName: "Font Family",
+    value: "Arial, sans-serif",
+  });
 
-    fillRule = new formattingSettings.ColorPicker({
-        name: "fillRule",
-        displayName: "Color saturation",
-        value: { value: "" }
-    });
+  fontSize = new formattingSettings.NumUpDown({
+    name: "fontSize",
+    displayName: "Text Size",
+    value: 16,
+  });
 
-    fontSize = new formattingSettings.NumUpDown({
-        name: "fontSize",
-        displayName: "Text Size",
-        value: 12
-    });
+  textAlign = new formattingSettings.AlignmentGroup({
+    name: "textAlign",
+    displayName: "Line Alignment",
+    mode: powerbi.visuals.AlignmentGroupMode.Horizonal,
+    value: "center",
+  });
 
-    name: string = "dataPoint";
-    displayName: string = "Data colors";
-    slices: Array<FormattingSettingsSlice> = [this.defaultColor, this.showAllDataPoints, this.fill, this.fillRule, this.fontSize];
+  paddingBottom = new formattingSettings.NumUpDown({
+    name: "paddingBottom",
+    displayName: "Padding Bottom",
+    value: 2,
+  });
+
+  marginBottom = new formattingSettings.NumUpDown({
+    name: "marginBottom",
+    displayName: "Margin Bottom",
+    value: 6,
+  });
+
+  underlineWidth = new formattingSettings.Slider({
+    name: "underlineWidth",
+    displayName: "Underline Width",
+    value: 10,
+  });
+
+  name: string = "slicerSettings";
+  displayName: string = "SlicerSettings";
+  slices: Array<FormattingSettingsSlice> = [
+    this.allSelectedLabel,
+    this.defaultColor,
+    this.fontFamily,
+    this.fontSize,
+    this.textAlign,
+    this.paddingBottom,
+    this.marginBottom,
+    this.underlineWidth,
+  ];
 }
 
 /**
-* visual settings model class
-*
-*/
+ * visual settings model class
+ *
+ */
 export class VisualFormattingSettingsModel extends FormattingSettingsModel {
-    // Create formatting settings model formatting cards
-    dataPointCard = new DataPointCardSettings();
+  // Create formatting settings model formatting cards
+  dataPointCard = new DataPointCardSettings();
 
-    cards = [this.dataPointCard];
+  cards = [this.dataPointCard];
 }
