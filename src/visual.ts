@@ -32,10 +32,11 @@ import "./../style/visual.less";
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import IVisual = powerbi.extensibility.visual.IVisual;
+import IVisualHost = powerbi.extensibility.visual.IVisualHost;
 
+import { setStyle } from "./setStyle";
 import { VisualFormattingSettingsModel } from "./settings";
 import { transformData, VData } from "./transformdata";
-import { setStyle } from "./setStyle";
 
 export class Visual implements IVisual {
   private target: HTMLElement;
@@ -44,9 +45,11 @@ export class Visual implements IVisual {
   private data: VData;
   private container: HTMLElement;
   private slicerItems: HTMLElement;
+  private host: IVisualHost;
 
   constructor(options: VisualConstructorOptions) {
     console.log("Visual constructor", options);
+    this.host = options.host;
     this.formattingSettingsService = new FormattingSettingsService();
     this.target = options.element;
     this.data = null;
@@ -63,26 +66,27 @@ export class Visual implements IVisual {
     this.formattingSettings = this.formattingSettingsService.populateFormattingSettingsModel(VisualFormattingSettingsModel, options.dataViews);
     const formatSettings = this.formattingSettings.dataPointCard;
     setStyle(this.formattingSettings);
-    console.log("Visual update", options);
-    this.data = transformData(options);
-
-    //slicer items
-
+    this.data = transformData(options, this.host);
+    this.formattingSettings.populateColorSelector(this.data.values);
+    const values = this.data.values;
     while (this.slicerItems.firstChild) {
       this.slicerItems.firstChild.remove();
     }
 
-    this.addItem(formatSettings.allSelectedLabel.value);
+    this.addItem(formatSettings.allSelectedLabel.value, formatSettings.defaultColor.value.value);
 
-    for (let value of this.data.values) {
-      this.addItem(<string>value);
+    if (values) {
+      values.forEach((value, index) => {
+        this.addItem(value.valueName, value.color);
+      });
     }
   }
 
-  private addItem(txt: string): void {
+  private addItem(txt: string, color: string): void {
     let slicerItem = document.createElement("li");
     let itemContainer = document.createElement("span");
     itemContainer.innerText = txt;
+    itemContainer.style.color = color;
     slicerItem.appendChild(itemContainer);
     this.slicerItems.appendChild(slicerItem);
   }

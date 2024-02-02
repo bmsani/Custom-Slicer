@@ -3,6 +3,56 @@ var customSlicer8EF416FA305C44038B637FBD3BCB2A11_DEBUG;
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 581:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   p: () => (/* binding */ createDataViewWildcardSelector)
+/* harmony export */ });
+/*
+*  Power BI Visualizations
+*
+*  Copyright (c) Microsoft Corporation
+*  All rights reserved.
+*  MIT License
+*
+*  Permission is hereby granted, free of charge, to any person obtaining a copy
+*  of this software and associated documentation files (the ""Software""), to deal
+*  in the Software without restriction, including without limitation the rights
+*  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+*  copies of the Software, and to permit persons to whom the Software is
+*  furnished to do so, subject to the following conditions:
+*
+*  The above copyright notice and this permission notice shall be included in
+*  all copies or substantial portions of the Software.
+*
+*  THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+*  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+*  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+*  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+*  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+*  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+*  THE SOFTWARE.
+*/
+function createDataViewWildcardSelector(dataViewWildcardMatchingOption) {
+    if (dataViewWildcardMatchingOption == null) {
+        dataViewWildcardMatchingOption = 0 /* DataViewWildcardMatchingOption.InstancesAndTotals */;
+    }
+    const selector = {
+        data: [
+            {
+                dataViewWildcard: {
+                    matchingOption: dataViewWildcardMatchingOption
+                }
+            }
+        ]
+    };
+    return selector;
+}
+//# sourceMappingURL=dataViewWildcard.js.map
+
+/***/ }),
+
 /***/ 84:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -533,9 +583,7 @@ function getPropertyValue(slice, value, defaultValue) {
 /* harmony export */ });
 
 function setStyle(s) {
-    console.log(s.dataPointCard.defaultColor.value);
     const style = document.documentElement.style;
-    style.setProperty("--default-color", s.dataPointCard.defaultColor.value.value);
     style.setProperty("--text-align", `${s.dataPointCard.textAlign.value}`);
     style.setProperty("--padding-bottom", `${s.dataPointCard.paddingBottom.value}px`);
     style.setProperty("--margin-bottom", `${s.dataPointCard.marginBottom.value}px`);
@@ -553,7 +601,10 @@ function setStyle(s) {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   E: () => (/* binding */ VisualFormattingSettingsModel)
 /* harmony export */ });
-/* harmony import */ var powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(84);
+/* harmony import */ var powerbi_visuals_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(350);
+/* harmony import */ var powerbi_visuals_api__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(powerbi_visuals_api__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(84);
+/* harmony import */ var powerbi_visuals_utils_dataviewutils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(581);
 /*
  *  Power BI Visualizations
  *
@@ -581,52 +632,54 @@ function setStyle(s) {
  */
 
 
-var FormattingSettingsCard = powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .Card */ .Zb;
-var FormattingSettingsModel = powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .Model */ .Hn;
+
+
+var FormattingSettingsCard = powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_1__/* .Card */ .Zb;
+var FormattingSettingsModel = powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_1__/* .Model */ .Hn;
 /**
  * Data Point Formatting Card
  */
 class DataPointCardSettings extends FormattingSettingsCard {
     constructor() {
         super(...arguments);
-        this.allSelectedLabel = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .TextInput */ .oi({
+        this.allSelectedLabel = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_1__/* .TextInput */ .oi({
             name: "allSelectedLabel",
             displayName: "All Selected Label",
             placeholder: "Enter text",
             value: "All",
         });
-        this.defaultColor = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .ColorPicker */ .zH({
-            name: "defaultColor",
-            displayName: "Default color",
-            value: { value: "#000000" },
-        });
-        this.fontFamily = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .FontPicker */ .xp({
+        this.fontFamily = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_1__/* .FontPicker */ .xp({
             name: "fontFamily",
             displayName: "Font Family",
             value: "Arial, sans-serif",
         });
-        this.fontSize = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .NumUpDown */ .L_({
+        this.fontSize = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_1__/* .NumUpDown */ .L_({
             name: "fontSize",
             displayName: "Text Size",
             value: 16,
         });
-        this.textAlign = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .AlignmentGroup */ .Nt({
+        this.defaultColor = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_1__/* .ColorPicker */ .zH({
+            name: "defaultColor",
+            displayName: "Default Color",
+            value: { value: "#000000" },
+        });
+        this.textAlign = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_1__/* .AlignmentGroup */ .Nt({
             name: "textAlign",
             displayName: "Line Alignment",
             mode: "horizontalAlignment" /* powerbi.visuals.AlignmentGroupMode.Horizonal */,
             value: "center",
         });
-        this.paddingBottom = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .NumUpDown */ .L_({
+        this.paddingBottom = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_1__/* .NumUpDown */ .L_({
             name: "paddingBottom",
             displayName: "Padding Bottom",
             value: 2,
         });
-        this.marginBottom = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .NumUpDown */ .L_({
+        this.marginBottom = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_1__/* .NumUpDown */ .L_({
             name: "marginBottom",
             displayName: "Margin Bottom",
             value: 6,
         });
-        this.underlineWidth = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .Slider */ .iR({
+        this.underlineWidth = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_1__/* .Slider */ .iR({
             name: "underlineWidth",
             displayName: "Underline Width",
             value: 10,
@@ -635,14 +688,23 @@ class DataPointCardSettings extends FormattingSettingsCard {
         this.displayName = "SlicerSettings";
         this.slices = [
             this.allSelectedLabel,
-            this.defaultColor,
             this.fontFamily,
             this.fontSize,
+            this.defaultColor,
             this.textAlign,
             this.paddingBottom,
             this.marginBottom,
             this.underlineWidth,
         ];
+    }
+}
+class ColorSelectorCardSettings extends FormattingSettingsCard {
+    constructor() {
+        super(...arguments);
+        this.name = "colorSelector";
+        this.displayName = "Data Colors";
+        // slices will be populated in barChart settings model `populateColorSelector` method
+        this.slices = [];
     }
 }
 /**
@@ -654,7 +716,24 @@ class VisualFormattingSettingsModel extends FormattingSettingsModel {
         super(...arguments);
         // Create formatting settings model formatting cards
         this.dataPointCard = new DataPointCardSettings();
-        this.cards = [this.dataPointCard];
+        this.colorSelector = new ColorSelectorCardSettings();
+        this.cards = [this.dataPointCard, this.colorSelector];
+    }
+    populateColorSelector(dataPoints) {
+        let slices = this.colorSelector.slices;
+        if (dataPoints) {
+            dataPoints.forEach((dataPoint) => {
+                console.log(dataPoint);
+                slices.push(new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_1__/* .ColorPicker */ .zH({
+                    name: "lineColor",
+                    displayName: dataPoint.valueName,
+                    value: { value: dataPoint.color },
+                    selector: powerbi_visuals_utils_dataviewutils__WEBPACK_IMPORTED_MODULE_2__/* .createDataViewWildcardSelector */ .p(0 /* dataViewWildcard.DataViewWildcardMatchingOption.InstancesAndTotals */),
+                    altConstantSelector: dataPoint.selectionId.getSelector(),
+                    instanceKind: 3 /* powerbi.VisualEnumerationInstanceKinds.ConstantOrRule */,
+                }));
+            });
+        }
     }
 }
 
@@ -667,28 +746,74 @@ class VisualFormattingSettingsModel extends FormattingSettingsModel {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   J: () => (/* binding */ transformData)
 /* harmony export */ });
+/* unused harmony export getCategoricalObjectValue */
 
-function transformData(options) {
-    var _a;
+function transformData(options, host) {
     let data;
     try {
-        const values = options.dataViews[0].categorical.categories[0].values;
-        const queryName = (_a = options.dataViews[0].categorical) === null || _a === void 0 ? void 0 : _a.categories[0].source.queryName;
+        const categories = options.dataViews[0].categorical.categories[0];
+        const queryName = categories.source.queryName;
         const dotIx = queryName === null || queryName === void 0 ? void 0 : queryName.indexOf(".");
+        const colorPalette = host.colorPalette;
+        let values = []; // Initialize values as an empty array
+        categories.values.forEach((value, index) => {
+            const color = getColumnColorByIndex(categories, index, colorPalette);
+            const selectionId = host.createSelectionIdBuilder().withCategory(categories, index).createSelectionId();
+            const singleValue = {
+                valueName: `${value}`,
+                color: `${color}`,
+                selectionId,
+            };
+            values.push(singleValue);
+        });
         data = {
-            values,
+            values: values,
             table: queryName === null || queryName === void 0 ? void 0 : queryName.substring(0, dotIx),
             column: queryName === null || queryName === void 0 ? void 0 : queryName.substring(dotIx + 1),
         };
     }
     catch (error) {
         data = {
-            values: [],
+            values: [
+                {
+                    valueName: ``,
+                    color: ``,
+                    selectionId: null,
+                },
+            ],
             table: "",
             column: "",
         };
     }
     return data;
+}
+function getColumnColorByIndex(category, index, colorPalette) {
+    if (colorPalette.isHighContrast) {
+        return colorPalette.background.value;
+    }
+    const defaultColor = colorPalette.getColor(`${category.values[index]}`).value;
+    const defaultColorFill = {
+        solid: {
+            color: defaultColor,
+        },
+    };
+    return getCategoricalObjectValue(category, index, "colorSelector", "lineColor", defaultColorFill).solid.color;
+}
+function getCategoricalObjectValue(category, index, objectName, propertyName, defaultValue) {
+    let categoryObjects = category.objects;
+    if (categoryObjects) {
+        let categoryObject = categoryObjects[index];
+        if (categoryObject) {
+            let object = categoryObject[objectName];
+            if (object) {
+                let property = object[propertyName];
+                if (property !== undefined) {
+                    return property;
+                }
+            }
+        }
+    }
+    return defaultValue;
 }
 
 
@@ -701,9 +826,9 @@ function transformData(options) {
 /* harmony export */   u: () => (/* binding */ Visual)
 /* harmony export */ });
 /* harmony import */ var powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(261);
+/* harmony import */ var _setStyle__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(911);
 /* harmony import */ var _settings__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(538);
 /* harmony import */ var _transformdata__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(193);
-/* harmony import */ var _setStyle__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(911);
 /*
  *  Power BI Visual CLI
  *
@@ -738,6 +863,7 @@ function transformData(options) {
 class Visual {
     constructor(options) {
         console.log("Visual constructor", options);
+        this.host = options.host;
         this.formattingSettingsService = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .Z();
         this.target = options.element;
         this.data = null;
@@ -753,21 +879,24 @@ class Visual {
         this.formattingSettings = this.formattingSettingsService.populateFormattingSettingsModel(_settings__WEBPACK_IMPORTED_MODULE_0__/* .VisualFormattingSettingsModel */ .E, options.dataViews);
         const formatSettings = this.formattingSettings.dataPointCard;
         (0,_setStyle__WEBPACK_IMPORTED_MODULE_2__/* .setStyle */ .A)(this.formattingSettings);
-        console.log("Visual update", options);
-        this.data = (0,_transformdata__WEBPACK_IMPORTED_MODULE_3__/* .transformData */ .J)(options);
-        //slicer items
+        this.data = (0,_transformdata__WEBPACK_IMPORTED_MODULE_3__/* .transformData */ .J)(options, this.host);
+        this.formattingSettings.populateColorSelector(this.data.values);
+        const values = this.data.values;
         while (this.slicerItems.firstChild) {
             this.slicerItems.firstChild.remove();
         }
-        this.addItem(formatSettings.allSelectedLabel.value);
-        for (let value of this.data.values) {
-            this.addItem(value);
+        this.addItem(formatSettings.allSelectedLabel.value, formatSettings.defaultColor.value.value);
+        if (values) {
+            values.forEach((value, index) => {
+                this.addItem(value.valueName, value.color);
+            });
         }
     }
-    addItem(txt) {
+    addItem(txt, color) {
         let slicerItem = document.createElement("li");
         let itemContainer = document.createElement("span");
         itemContainer.innerText = txt;
+        itemContainer.style.color = color;
         slicerItem.appendChild(itemContainer);
         this.slicerItems.appendChild(slicerItem);
     }
@@ -787,6 +916,13 @@ class Visual {
 /***/ ((module) => {
 
 module.exports = Function('return this')();
+
+/***/ }),
+
+/***/ 350:
+/***/ ((module) => {
+
+module.exports = null;
 
 /***/ })
 
@@ -817,6 +953,18 @@ module.exports = Function('return this')();
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
