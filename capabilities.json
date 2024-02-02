@@ -14,15 +14,6 @@
             "text": true
           }
         },
-        "defaultColor": {
-          "type": {
-            "fill": {
-              "solid": {
-                "color": true
-              }
-            }
-          }
-        },
         "fontFamily": {
           "type": {
             "formatting": {
@@ -34,6 +25,15 @@
           "type": {
             "formatting": {
               "fontSize": true
+            }
+          }
+        },
+        "defaultColor": {
+          "type": {
+            "fill": {
+              "solid": {
+                "color": true
+              }
             }
           }
         },
@@ -57,6 +57,19 @@
         "underlineWidth": {
           "type": {
             "integer": true
+          }
+        }
+      }
+    },
+    "colorSelector": {
+      "properties": {
+        "lineColor": {
+          "type": {
+            "fill": {
+              "solid": {
+                "color": true
+              }
+            }
           }
         }
       }

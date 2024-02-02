@@ -26,12 +26,14 @@
 
 "use strict";
 
+import powerbi from "powerbi-visuals-api";
 import { formattingSettings } from "powerbi-visuals-utils-formattingmodel";
+import { dataViewWildcard } from "powerbi-visuals-utils-dataviewutils";
+import { IValue } from "./transformdata";
 
 import FormattingSettingsCard = formattingSettings.Card;
 import FormattingSettingsSlice = formattingSettings.Slice;
 import FormattingSettingsModel = formattingSettings.Model;
-import { NumUpDown } from "powerbi-visuals-utils-formattingmodel/lib/FormattingSettingsComponents";
 
 /**
  * Data Point Formatting Card
@@ -45,12 +47,6 @@ class DataPointCardSettings extends FormattingSettingsCard {
     value: "All",
   });
 
-  defaultColor = new formattingSettings.ColorPicker({
-    name: "defaultColor",
-    displayName: "Default color",
-    value: { value: "#000000" },
-  });
-
   fontFamily = new formattingSettings.FontPicker({
     name: "fontFamily",
     displayName: "Font Family",
@@ -61,6 +57,12 @@ class DataPointCardSettings extends FormattingSettingsCard {
     name: "fontSize",
     displayName: "Text Size",
     value: 16,
+  });
+
+  defaultColor = new formattingSettings.ColorPicker({
+    name: "defaultColor",
+    displayName: "Default Color",
+    value: { value: "#000000" },
   });
 
   textAlign = new formattingSettings.AlignmentGroup({
@@ -92,14 +94,22 @@ class DataPointCardSettings extends FormattingSettingsCard {
   displayName: string = "SlicerSettings";
   slices: Array<FormattingSettingsSlice> = [
     this.allSelectedLabel,
-    this.defaultColor,
     this.fontFamily,
     this.fontSize,
+    this.defaultColor,
     this.textAlign,
     this.paddingBottom,
     this.marginBottom,
     this.underlineWidth,
   ];
+}
+
+class ColorSelectorCardSettings extends FormattingSettingsCard {
+  name: string = "colorSelector";
+  displayName: string = "Data Colors";
+
+  // slices will be populated in barChart settings model `populateColorSelector` method
+  slices: Array<FormattingSettingsSlice> = [];
 }
 
 /**
@@ -109,6 +119,26 @@ class DataPointCardSettings extends FormattingSettingsCard {
 export class VisualFormattingSettingsModel extends FormattingSettingsModel {
   // Create formatting settings model formatting cards
   dataPointCard = new DataPointCardSettings();
+  colorSelector = new ColorSelectorCardSettings();
 
-  cards = [this.dataPointCard];
+  cards = [this.dataPointCard, this.colorSelector];
+
+  populateColorSelector(dataPoints: IValue[]) {
+    let slices = this.colorSelector.slices;
+    if (dataPoints) {
+      dataPoints.forEach((dataPoint) => {
+        console.log(dataPoint);
+        slices.push(
+          new formattingSettings.ColorPicker({
+            name: "lineColor",
+            displayName: dataPoint.valueName,
+            value: { value: dataPoint.color },
+            selector: dataViewWildcard.createDataViewWildcardSelector(dataViewWildcard.DataViewWildcardMatchingOption.InstancesAndTotals),
+            altConstantSelector: dataPoint.selectionId.getSelector(),
+            instanceKind: powerbi.VisualEnumerationInstanceKinds.ConstantOrRule,
+          })
+        );
+      });
+    }
+  }
 }

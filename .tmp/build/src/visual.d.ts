@@ -10,6 +10,7 @@ export declare class Visual implements IVisual {
     private data;
     private container;
     private slicerItems;
+    private host;
     constructor(options: VisualConstructorOptions);
     update(options: VisualUpdateOptions): void;
     private addItem;
