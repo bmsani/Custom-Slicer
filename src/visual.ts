@@ -34,6 +34,7 @@ import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import IVisual = powerbi.extensibility.visual.IVisual;
 import IVisualHost = powerbi.extensibility.visual.IVisualHost;
 
+import { IBasicFilter, FilterType } from "powerbi-models";
 import { setStyle } from "./setStyle";
 import { VisualFormattingSettingsModel } from "./settings";
 import { transformData, VData } from "./transformdata";
@@ -46,10 +47,12 @@ export class Visual implements IVisual {
   private container: HTMLElement;
   private slicerItems: HTMLElement;
   private host: IVisualHost;
+  private basicFilter: IBasicFilter;
 
   constructor(options: VisualConstructorOptions) {
     console.log("Visual constructor", options);
     this.host = options.host;
+    this.basicFilter = null;
     this.formattingSettingsService = new FormattingSettingsService();
     this.target = options.element;
     this.data = null;
@@ -73,6 +76,17 @@ export class Visual implements IVisual {
       this.slicerItems.firstChild.remove();
     }
 
+    this.basicFilter = {
+      $schema: "https://powerbi.com/product/schema#basic",
+      target: {
+        table: this.data.table,
+        column: this.data.column,
+      },
+      operator: "In",
+      values: null,
+      filterType: FilterType.Basic,
+    };
+
     this.addItem(formatSettings.allSelectedLabel.value, formatSettings.defaultColor.value.value);
 
     if (values) {
@@ -86,6 +100,16 @@ export class Visual implements IVisual {
     let slicerItem = document.createElement("li");
     let itemContainer = document.createElement("span");
     itemContainer.innerText = txt;
+    if (txt != this.formattingSettings.dataPointCard.allSelectedLabel.value) {
+      itemContainer.onclick = () => {
+        this.basicFilter.values = [txt];
+        this.host.applyJsonFilter(this.basicFilter, "general", "filter", powerbi.FilterAction.merge);
+      };
+    } else {
+      itemContainer.onclick = () => {
+        this.host.applyJsonFilter(this.basicFilter, "general", "filter", powerbi.FilterAction.remove);
+      };
+    }
     itemContainer.style.color = color;
     slicerItem.appendChild(itemContainer);
     this.slicerItems.appendChild(slicerItem);
