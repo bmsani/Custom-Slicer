@@ -12,9 +12,11 @@ export declare class Visual implements IVisual {
     private slicerItems;
     private host;
     private basicFilter;
+    private tooltipServiceWrapper;
     constructor(options: VisualConstructorOptions);
     update(options: VisualUpdateOptions): void;
     private addItem;
+    private getTooltipData;
     /**
      * Returns properties pane formatting model content hierarchies, properties and latest formatting values, Then populate properties pane.
      * This method is called once every time we open properties pane or when the user edit any format property.

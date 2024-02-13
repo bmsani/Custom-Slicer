@@ -33,11 +33,14 @@ import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructor
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import IVisual = powerbi.extensibility.visual.IVisual;
 import IVisualHost = powerbi.extensibility.visual.IVisualHost;
+import VisualTooltipDataItem = powerbi.extensibility.VisualTooltipDataItem;
 
+import { createTooltipServiceWrapper, ITooltipServiceWrapper } from "powerbi-visuals-utils-tooltiputils";
 import { IBasicFilter, FilterType } from "powerbi-models";
 import { setStyle } from "./setStyle";
 import { VisualFormattingSettingsModel } from "./settings";
-import { transformData, VData } from "./transformdata";
+import { IValue, transformData, VData } from "./transformdata";
+import * as d3 from "d3";
 
 export class Visual implements IVisual {
   private target: HTMLElement;
@@ -48,6 +51,7 @@ export class Visual implements IVisual {
   private slicerItems: HTMLElement;
   private host: IVisualHost;
   private basicFilter: IBasicFilter;
+  private tooltipServiceWrapper: ITooltipServiceWrapper;
 
   constructor(options: VisualConstructorOptions) {
     console.log("Visual constructor", options);
@@ -55,6 +59,7 @@ export class Visual implements IVisual {
     this.basicFilter = null;
     this.formattingSettingsService = new FormattingSettingsService();
     this.target = options.element;
+    this.tooltipServiceWrapper = createTooltipServiceWrapper(this.host.tooltipService, options.element);
     this.data = null;
     if (document) {
       this.container = document.createElement("div");
@@ -71,6 +76,7 @@ export class Visual implements IVisual {
     setStyle(this.formattingSettings);
     this.data = transformData(options, this.host);
     this.formattingSettings.populateColorSelector(this.data.values);
+
     const values = this.data.values;
     while (this.slicerItems.firstChild) {
       this.slicerItems.firstChild.remove();
@@ -92,6 +98,11 @@ export class Visual implements IVisual {
     if (values) {
       values.forEach((value, index) => {
         this.addItem(value.valueName, value.color);
+        this.tooltipServiceWrapper.addTooltip(
+          d3.select((this.slicerItems.childNodes[index + 1] as Element).querySelector("span")), // Select the span inside the current slicer item
+          () => this.getTooltipData(value),
+          () => value.selectionId
+        );
       });
     }
   }
@@ -111,8 +122,20 @@ export class Visual implements IVisual {
       };
     }
     itemContainer.style.color = color;
+
     slicerItem.appendChild(itemContainer);
     this.slicerItems.appendChild(slicerItem);
+  }
+
+  private getTooltipData(value: IValue): VisualTooltipDataItem[] {
+    console.log(value.valueName);
+    return [
+      {
+        displayName: value.valueName,
+        value: value.valueName,
+        color: value.color,
+      },
+    ];
   }
 
   /**
